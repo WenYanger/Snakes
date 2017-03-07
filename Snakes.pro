@@ -10,7 +10,11 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES += main.cpp \
-    snake.cpp
+    snake.cpp \
+    node.cpp \
+    blockmap.cpp
 
 HEADERS += \
-    snake.h
+    snake.h \
+    node.h \
+    blockmap.h
