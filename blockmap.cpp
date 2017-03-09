@@ -28,7 +28,7 @@ blockmap::blockmap(int width,int height):width(width),height(height)
      * 6: Free Block
      * 7: Banned Block
      */
-    this->head = new Node(1,1,4);
+    this->head = std::shared_ptr<Node>(new Node(1,1,4));
     for(int i=0;i<height;i++){
         for(int j=0;j<width;j++){
             if(i==0||j==0||i==height-1||j==width-1){
@@ -98,7 +98,7 @@ void blockmap::mapReflush()
 //将snake信息刷入map中
 void blockmap::snakeReflush()
 {
-    Node* cn = this->head; //cn=CurrentNode
+    std::shared_ptr<Node> cn = this->head; //cn=CurrentNode
     this->blockMap[cn->x][cn->y]=cn->type;
     while(cn=cn->nextnode){
         this->blockMap[cn->x][cn->y]=1;
@@ -122,20 +122,46 @@ void blockmap::nextStep()
 {
     //1. 判断是否还有target,没有则给定新的target
     if(!this->target){
-        //this->generateTarget();
-        this->target = new Node(5,5,0);
-        this->blockMap[5][5]=0;
+        this->generateTarget();
+        //this->target = std::shared_ptr<Node>(new Node(5,5,0));
+        //this->blockMap[5][5]=0;
     }
     std::cout<<this->target;
     std::cout<<this->head;
 
     //2. 使用算法改变snake状态
-    Node* nextNode = this->search();
-    //std::cout<<nextNode;
+    std::shared_ptr<Node> nextNode = this->search();
     while(nextNode){
+
+        if(nextNode==this->target){//如果下一结点是目标
+            nextNode->prenode = nullptr;
+            nextNode->nextnode = this->head;
+            this->head = nextNode;
+            //TODO: 处理头部方向问题
+
+            //TODO: 删除target
+        }
+        else{
+            nextNode->prenode = nullptr;
+            nextNode->nextnode = this->head;
+            this->head = nextNode;
+            std::shared_ptr<Node> currentHead = this->head;
+            while(currentHead){
+                if(!currentHead->nextnode){
+                    currentHead->prenode = nullptr;
+                    break;
+                }
+                else{
+                    currentHead = currentHead->nextnode;
+                }
+            }
+        }
+
+
         std::cout<<nextNode;
         nextNode = nextNode->nextnode;
     }
+
     /*
     if(nextNode->x==this->target->x && nextNode->y==this->target->y){
         nextNode->prenode = nullptr;
@@ -163,13 +189,14 @@ void blockmap::nextStep()
 }
 
 //使用算法算出头结点下一位置
-Node* blockmap::search()
+std::shared_ptr<Node> blockmap::search()
 {
-    std::queue<Node*> q;
+
+    std::queue<std::shared_ptr<Node>> q;
     q.push(this->head);
     this->visit[1][1]=1;//初始化头结点visit
     while(!q.empty()){
-        Node* node = q.front();
+        std::shared_ptr<Node> node = q.front();
         //this->travelsal();
         //std::cout<<node<<"\n";
         q.pop();
@@ -186,28 +213,30 @@ Node* blockmap::search()
         else{
             if(checkNodeAvailability(node->x-1,node->y) && this->visit[node->x-1][node->y]==0){
                 //std::auto_ptr<Node> p(this->createNodePtr());
-                q.push(new Node(node->x-1,node->y,node,nullptr));
+                q.push(std::shared_ptr<Node>(new Node(node->x-1,node->y,node,nullptr)));
                 this->visit[node->x-1][node->y]=1;
             };
             if(checkNodeAvailability(node->x+1,node->y) && this->visit[node->x+1][node->y]==0){
-                q.push(new Node(node->x+1,node->y,node,nullptr));
+                q.push(std::shared_ptr<Node>(new Node(node->x+1,node->y,node,nullptr)));
                 this->visit[node->x+1][node->y]=1;
             };
             if(checkNodeAvailability(node->x,node->y+1) && this->visit[node->x][node->y+1]==0){
-                q.push(new Node(node->x,node->y+1,node,nullptr));
+                q.push(std::shared_ptr<Node>(new Node(node->x,node->y+1,node,nullptr)));
                 this->visit[node->x][node->y+1]=1;
             };
             if(checkNodeAvailability(node->x,node->y-1) && this->visit[node->x][node->y-1]==0){
-                q.push(new Node(node->x,node->y-1,node,nullptr));
+                q.push(std::shared_ptr<Node>(new Node(node->x,node->y-1,node,nullptr)));
                 this->visit[node->x][node->y-1]=1;
             };
         }
     }
+    return nullptr;
 }
+
 
 bool blockmap::checkNodeAvailability(int x, int y)
 {
-    if(this->blockMap[y][x]==6 || this->blockMap[y][x]==0){
+    if(this->blockMap[x][y]==6 || this->blockMap[x][y]==0){
         return true;
     }
     else{
@@ -228,7 +257,7 @@ void blockmap::generateTarget()
             break;
         }
     }
-    this->target = new Node(rh,rw,0);
+    this->target = std::shared_ptr<Node>(new Node(rh,rw,0));
     this->blockMap[rh][rw]=0;
 }
 

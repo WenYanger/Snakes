@@ -1,6 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 #include <iostream>
+#include <memory>
 
 
 class Node
@@ -11,19 +12,30 @@ public:
     int type;
 
 public:
-    Node* prenode;
-    Node* nextnode;
+    std::shared_ptr<Node> prenode;
+    std::shared_ptr<Node> nextnode;
 
     Node();
+    //~Node();
     Node(int x,int y);
     Node(int x,int y, int type);
-    Node(int x,int y, Node *prenode, Node* nextnode);
+    Node(int x,int y, std::shared_ptr<Node> prenode, std::shared_ptr<Node> nextnode);
 
 
-    friend std::ostream& operator<< (std::ostream &os,Node *nd)
+    friend std::ostream& operator<< (std::ostream &os,std::shared_ptr<Node> nd)
     {
         os<<"X: "<<nd->x<<"\n"<<"Y: "<<nd->y<<"\n";
         return os;
+    }
+
+    bool operator== (Node* nd) const
+    {
+        if(this->x == nd->x && this->y == nd->y){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 };
 

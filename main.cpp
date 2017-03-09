@@ -1,6 +1,5 @@
 #include <QCoreApplication>
 #include <blockmap.h>
-#include <snake.h>
 #include <node.h>
 #include <iostream>
 #include <stdio.h>
