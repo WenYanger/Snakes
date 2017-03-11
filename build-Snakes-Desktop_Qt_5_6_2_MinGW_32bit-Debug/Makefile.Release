@@ -110,64 +110,7 @@ compiler_clean:
 
 ####### Compile
 
-release/main.o: ../main.cpp ../../../QT/5.6/mingw49_32/include/QtCore/QCoreApplication \
-		../../../QT/5.6/mingw49_32/include/QtCore/qcoreapplication.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qglobal.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qconfig.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qfeatures.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qsystemdetection.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qprocessordetection.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qcompilerdetection.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qtypeinfo.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qtypetraits.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qisenum.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qsysinfo.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qlogging.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qflags.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qatomic.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qbasicatomic.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qatomic_bootstrap.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qgenericatomic.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qatomic_cxx11.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qatomic_gcc.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qatomic_msvc.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qatomic_armv7.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qatomic_armv6.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qatomic_armv5.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qatomic_ia64.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qatomic_x86.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qatomic_unix.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qglobalstatic.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qmutex.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qnumeric.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qversiontagging.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qstring.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qchar.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qbytearray.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qrefcount.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qnamespace.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qarraydata.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qstringbuilder.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qobject.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qobjectdefs.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qobjectdefs_impl.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qlist.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qalgorithms.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qiterator.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qhashfunctions.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qpair.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qbytearraylist.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qstringlist.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qregexp.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qstringmatcher.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qcoreevent.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qscopedpointer.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qmetatype.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qvarlengtharray.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qcontainerfwd.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qobject_impl.h \
-		../../../QT/5.6/mingw49_32/include/QtCore/qeventloop.h \
-		../blockmap.h \
+release/main.o: ../main.cpp ../blockmap.h \
 		../node.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\main.o ..\main.cpp
 

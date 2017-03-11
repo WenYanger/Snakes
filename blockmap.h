@@ -31,6 +31,7 @@ private:
     std::shared_ptr<Node> search();
     bool checkNodeAvailability(int, int);
     void generateTarget();
+    int getDirection(std::shared_ptr<Node> n1, std::shared_ptr<Node> n2);
 
 
 };

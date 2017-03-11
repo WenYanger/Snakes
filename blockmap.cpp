@@ -69,16 +69,16 @@ void blockmap::mapReflush()
                     wprintf(L"■");
                     break;
                 case 2:
-                    wprintf(L"▲");
+                    wprintf(L"↑");
                     break;
                 case 3:
-                    wprintf(L"►");
+                    wprintf(L"→");
                     break;
                 case 4:
-                    wprintf(L"▼");
+                    wprintf(L"↓");
                     break;
                 case 5:
-                    wprintf(L"◄");
+                    wprintf(L"←");
                     break;
                 case 6:
                     wprintf(L"□");
@@ -138,18 +138,28 @@ void blockmap::nextStep()
     std::shared_ptr<Node> nextNode = this->path;
     this->path = this->path->prenode;
     if(nextNode->x == this->target->x && nextNode->y == this->target->y){
-        this->head = nextNode;
-        this->head->setType(4);
         //TODO: 处理头部方向问题
+        int direction = this->getDirection(nextNode,this->head);
+        this->head->setType(1);
+        nextNode->setType(direction);
+        this->head = nextNode;
+
+
         //TODO: 删除target
         this->target = nullptr;
 
     }
     else{
-        nextNode->setType(4);
+        int direction = this->getDirection(nextNode,this->head);
+        this->head->setType(1);
         nextNode->nextnode = this->head;
         this->head->prenode = nextNode;
         this->head = nextNode;
+        this->head->setType(direction);
+//        nextNode->setType(4);
+//        nextNode->nextnode = this->head;
+//        this->head->prenode = nextNode;
+//        this->head = nextNode;
         //1.删除蛇的尾结点
         std::shared_ptr<Node> tailNode = this->head->nextnode;
         while(tailNode){
@@ -258,6 +268,22 @@ void blockmap::travelsal()
             std::cout<<this->visit[i][j]<<" ";
         }
         std::cout<<std::endl;
+    }
+}
+
+int blockmap::getDirection(std::shared_ptr<Node> n1, std::shared_ptr<Node> n2)
+{
+    if(n1->x == n2->x && (n1->y -n2->y) == 1){
+        return 3; // 右
+    }
+    if(n1->x == n2->x && (n1->y - n2->y) == -1){
+        return 5; // 左
+    }
+    if(n1->y == n2->y && (n1->x - n2->x) == 1){
+        return 4; // 右
+    }
+    if(n1->y == n2->y && (n1->x - n2->x) == -1){
+        return 2; // 左
     }
 }
 
