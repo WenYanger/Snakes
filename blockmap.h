@@ -2,37 +2,34 @@
 #define BLOCKMAP_H
 #include <stdio.h>
 #include <node.h>
+#include <snake.h>
 #include <stdlib.h>//rand函数和srand函数
 #include <time.h>//用时间实现伪随即
 #include <queue>
 #include <memory>
 
-class blockmap
+class Snake;
+class BlockMap
 {
-private:
-    int width;
-    int height;
+public:
+    Snake ** sa;
     int **blockMap;
     int **visit; //记录搜索过的点，减少广度搜索个数
-    std::shared_ptr<Node> head;
+    int width;
+    int height;
+    int snakeNum;
     std::shared_ptr<Node> target=NULL;
-    std::shared_ptr<Node> path=NULL; // 路径的头结点
 public:
-    blockmap();
-    blockmap(int width,int height);
-    bool autoReflush();
-    void travelsal();
-private:
+    BlockMap();
+    BlockMap(Snake ** sa,int ptrNum, int width, int height);
 
+    bool autoReflush();
     void mapReflush();
     void snakeReflush();
     void visitReflush();
     void nextStep();
     std::shared_ptr<Node> search();
-    bool checkNodeAvailability(int, int);
-    void generateTarget();
-    int getDirection(std::shared_ptr<Node> n1, std::shared_ptr<Node> n2);
-
+    void noticeAllSnakesForNewPath();
 
 };
 

@@ -19,7 +19,10 @@ Node::Node(int x, int y, std::shared_ptr<Node> prenode, std::shared_ptr<Node> ne
 
 //Node::~Node()
 //{
-//    std::cout << "delete node" << std::endl;
+//    static int countNode = 0;
+//    countNode++;
+//    std::cout<<"countNode:"<<countNode<<std::endl;
+//    //std::cout << "delete node" << std::endl;
 //}
 
 void Node::setType(int type){

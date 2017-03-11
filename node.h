@@ -27,7 +27,7 @@ public:
 
     friend std::ostream& operator<< (std::ostream &os,std::shared_ptr<Node> nd)
     {
-        os<<"X: "<<nd->x<<"\n"<<"Y: "<<nd->y<<"\n";
+        os<<"X: "<<nd->x<<"  "<<"Y: "<<nd->y<<"\n";
         return os;
     }
 };
