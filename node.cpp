@@ -21,3 +21,8 @@ Node::Node(int x, int y, std::shared_ptr<Node> prenode, std::shared_ptr<Node> ne
 //{
 //    std::cout << "delete node" << std::endl;
 //}
+
+void Node::setType(int type){
+    this->type = type;
+}
+

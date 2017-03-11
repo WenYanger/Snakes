@@ -16,7 +16,7 @@ private:
     int **visit; //记录搜索过的点，减少广度搜索个数
     std::shared_ptr<Node> head;
     std::shared_ptr<Node> target=NULL;
-    std::shared_ptr<Node> path=NULL;
+    std::shared_ptr<Node> path=NULL; // 路径的头结点
 public:
     blockmap();
     blockmap(int width,int height);
@@ -31,8 +31,6 @@ private:
     std::shared_ptr<Node> search();
     bool checkNodeAvailability(int, int);
     void generateTarget();
-
-
 
 
 };

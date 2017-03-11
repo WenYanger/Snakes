@@ -50,7 +50,7 @@ bool blockmap::autoReflush()
     this->nextStep();
     this->snakeReflush();
     this->mapReflush();
-    this->visitReflush();
+
     return true;
 }
 
@@ -66,7 +66,7 @@ void blockmap::mapReflush()
                     wprintf(L"⊙");
                     break;
                 case 1:
-                    wprintf(L"⦁");
+                    wprintf(L"■");
                     break;
                 case 2:
                     wprintf(L"▲");
@@ -130,62 +130,37 @@ void blockmap::nextStep()
     std::cout<<this->head;
 
     //2. 使用算法改变snake状态
-    std::shared_ptr<Node> nextNode = this->search();
-    while(nextNode){
-
-        if(nextNode==this->target){//如果下一结点是目标
-            nextNode->prenode = nullptr;
-            nextNode->nextnode = this->head;
-            this->head = nextNode;
-            //TODO: 处理头部方向问题
-
-            //TODO: 删除target
-        }
-        else{
-            nextNode->prenode = nullptr;
-            nextNode->nextnode = this->head;
-            this->head = nextNode;
-            std::shared_ptr<Node> currentHead = this->head;
-            while(currentHead){
-                if(!currentHead->nextnode){
-                    currentHead->prenode = nullptr;
-                    break;
-                }
-                else{
-                    currentHead = currentHead->nextnode;
-                }
-            }
-        }
-
-
-        std::cout<<nextNode;
-        nextNode = nextNode->nextnode;
+    if(!this->path){
+        this->path = this->search();
+        this->visitReflush();
     }
-
-    /*
-    if(nextNode->x==this->target->x && nextNode->y==this->target->y){
-        nextNode->prenode = nullptr;
-        nextNode->nextnode = this->head;
+    //沿着path前进一格
+    std::shared_ptr<Node> nextNode = this->path;
+    this->path = this->path->prenode;
+    if(nextNode->x == this->target->x && nextNode->y == this->target->y){
         this->head = nextNode;
+        this->head->setType(4);
         //TODO: 处理头部方向问题
+        //TODO: 删除target
+        this->target = nullptr;
+
     }
     else{
-        nextNode->prenode = nullptr;
+        nextNode->setType(4);
         nextNode->nextnode = this->head;
+        this->head->prenode = nextNode;
         this->head = nextNode;
-        Node *currentHead = this->head;
-        while(currentHead){
-            if(!currentHead->nextnode){
-                currentHead->prenode = nullptr;
+        //1.删除蛇的尾结点
+        std::shared_ptr<Node> tailNode = this->head->nextnode;
+        while(tailNode){
+            if(!tailNode->nextnode){
+                tailNode->prenode->nextnode = nullptr;
+                this->blockMap[tailNode->x][tailNode->y] = 6;
                 break;
             }
-            else{
-                currentHead = currentHead->nextnode;
-            }
+            tailNode = tailNode->nextnode;
         }
     }
-    */
-
 }
 
 //使用算法算出头结点下一位置
@@ -194,19 +169,31 @@ std::shared_ptr<Node> blockmap::search()
 
     std::queue<std::shared_ptr<Node>> q;
     q.push(this->head);
-    this->visit[1][1]=1;//初始化头结点visit
+    this->visit[this->head->x][this->head->y]=1;//初始化头结点visit
     while(!q.empty()){
         std::shared_ptr<Node> node = q.front();
         //this->travelsal();
         //std::cout<<node<<"\n";
         q.pop();
         if(node->x==this->target->x && node->y==this->target->y){ //如果当期结点是target,则回溯并返回pathHead指向的下一结点
-            while(node->prenode){
-                if(node->prenode == this->head){
+            //对node链表的pre和next进行重置
+            node->nextnode=node->prenode;
+            node->prenode = nullptr;
+            std::shared_ptr<Node> temp_node = node;
+            if(node->nextnode == this->head){
+                return node;
+            }else{
+                node = node->nextnode;
+            }
+            while(node){
+                node->nextnode = node->prenode;
+                if(node->nextnode == this->head){
+                    node->prenode = temp_node;
                     return node;
                 }else{
-                    node->prenode->nextnode = node;
-                    node = node->prenode;
+                    node->prenode = temp_node;
+                    temp_node = node;
+                    node = node->nextnode;
                 }
             }
         }

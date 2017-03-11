@@ -11,6 +11,7 @@ public:
     int y;
     int type;
 
+
 public:
     std::shared_ptr<Node> prenode;
     std::shared_ptr<Node> nextnode;
@@ -21,21 +22,13 @@ public:
     Node(int x,int y, int type);
     Node(int x,int y, std::shared_ptr<Node> prenode, std::shared_ptr<Node> nextnode);
 
+    void setType(int type);
+
 
     friend std::ostream& operator<< (std::ostream &os,std::shared_ptr<Node> nd)
     {
         os<<"X: "<<nd->x<<"\n"<<"Y: "<<nd->y<<"\n";
         return os;
-    }
-
-    bool operator== (Node* nd) const
-    {
-        if(this->x == nd->x && this->y == nd->y){
-            return true;
-        }
-        else{
-            return false;
-        }
     }
 };
 
